@@ -505,7 +505,7 @@ namespace mh
         /// <param name="hwnd"></param>
         public void initMhSystem(IntPtr hwnd)
         {
-           // string path = "E:\\mh_code\\mh\\mh\\bin\\x86\\Debug\\mhxy_kernel.dll";//"E:\\梦幻代码\\mhxy_kernel\\Release\\mhxy_kernel.dll";
+           // string path = "E:\\mh_code\\mh\\mh\\bin\\x86\\Debug\\mhxy_kernel.dll";
             string path = Path.GetFullPath("mhxy_kernel.dll");
 
             //获取远程进程的函数地址
