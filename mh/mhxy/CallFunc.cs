@@ -445,29 +445,11 @@ namespace mh.mhxy
         /// <param name="y"></param>
         public static void MouseMove(int hwnd, int x, int y)
         {
-            while (true)
-            {
-                int lx = LoadDll.ReadHwndMemoryOffsetValue((IntPtr)hwnd, Global.addr.ls, 0x64);
-                int ly = LoadDll.ReadHwndMemoryOffsetValue((IntPtr)hwnd, Global.addr.ls, 0x68);
-                if ((lx == x && y == ly) || (Math.Abs(x - lx) <= 1 && Math.Abs(ly - y) <= 1))
-                {
-                    break;
-                }
 
-                double xx = (x - lx) * 0.92;
-                double yy = (y - ly) * 0.92;
-
-                int dx = LoadDll.ReadHwndMemoryOffsetValue((IntPtr)hwnd, Global.addr.bX);
-                int dy = LoadDll.ReadHwndMemoryOffsetValue((IntPtr)hwnd, new IntPtr(Global.addr.bX + 4).ToInt32());
-
-                int x1 = (int)xx + dx;
-                int y1 = (int)yy + dy;
-                LoadDll.WriteMemoryHwndValue((IntPtr)hwnd, Global.addr.bX, BitConverter.GetBytes(x1));
-                LoadDll.WriteMemoryHwndValue((IntPtr)hwnd, new IntPtr(Global.addr.bX + 4).ToInt32(), BitConverter.GetBytes(y1));
-                System.Threading.Thread.Sleep(30);
-            }
-
-
+            int x1 = Global.addr.bX - 4 ^ x;
+            int y1 = Global.addr.bY - 12 ^ y;
+            LoadDll.WriteMemoryHwndValue((IntPtr)hwnd, Global.addr.bX, BitConverter.GetBytes(x1));
+            LoadDll.WriteMemoryHwndValue((IntPtr)hwnd, Global.addr.bY, BitConverter.GetBytes(y1));
         }
 
         public static void clickWin(int hwnd, int x, int y)

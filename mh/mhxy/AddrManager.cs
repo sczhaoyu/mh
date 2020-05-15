@@ -25,14 +25,14 @@ namespace mh.mhxy
                     for (int j = 0; j < v.Length; j++)
                     {
                         //防止下标越界
-                        if (old.Length<= i + j)
+                        if (old.Length <= i + j)
                         {
                             if (v[j] != old[i + j])
                             {
                                 ret = false;
                             }
                         }
-                       
+
                     }
                     if (ret)
                     {
@@ -88,14 +88,13 @@ namespace mh.mhxy
                 //    addr.PeopleID = BitConverter.ToInt32(buffer.Skip(idx - 4).Take(4).ToArray(), 0);
                 //    Log.WriteLine("人物ID基址{0}", StringUtil.IntToHex(addr.PeopleID));
                 //}
-                //搜索白鼠基址
-                idx = BytesIndexOf(buffer, StringUtil.strToToHexByte("CC 33 C0 C7 05"));
-                if (idx > 0)
-                {
-                    addr.bX = BitConverter.ToInt32(buffer.Skip(idx + 96).Take(4).ToArray(), 0);
-                    addr.bY = addr.bX + 8;
-                    Log.WriteLine("白鼠基址{0}", StringUtil.IntToHex(addr.bX));
-                }
+
+
+                //白鼠基址
+                addr.bX = 0x11F01994;
+                addr.bY = 0x11F01998;
+                Log.WriteLine("白鼠基址{0}", StringUtil.IntToHex(addr.bX));
+
                 //搜索蓝鼠基址
                 idx = BytesIndexOf(buffer, StringUtil.strToToHexByte("8D 44 24 08 83 C4 04 50 8B 01"));
                 if (idx > 0)

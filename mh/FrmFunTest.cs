@@ -1,4 +1,5 @@
-﻿using System;
+﻿using mh.mhxy;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -114,6 +115,13 @@ namespace mh
         private void btn_changan_Click(object sender, EventArgs e)
         {
             ex.bjtask.toChangAn();
+        }
+
+        private void btn_movse_Click(object sender, EventArgs e)
+        {
+            int x = Convert.ToInt32(mouse_movX.Text.Trim());
+            int y = Convert.ToInt32(mouse_movY.Text.Trim());
+            CallFunc.MouseMove(hwnd,x,y);
         }
     }
 }

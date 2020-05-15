@@ -679,7 +679,6 @@ namespace mh
             ft.ex = mh_excute[current_mh];
             ft.ShowDialog();
         }
-
-       
+ 
     }
 }
