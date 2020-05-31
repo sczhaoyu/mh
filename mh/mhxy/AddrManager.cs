@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-
+using System.Text.RegularExpressions;
 namespace mh.mhxy
 {
     /// <summary>
@@ -11,6 +11,10 @@ namespace mh.mhxy
     /// </summary>
     class AddrManager
     {
+
+
+
+
         /// <summary>
         /// 人物ID地址
         /// </summary>
@@ -25,18 +29,20 @@ namespace mh.mhxy
                     for (int j = 0; j < v.Length; j++)
                     {
                         //防止下标越界
-                        if (old.Length <= i + j)
+                        if (i + j >= old.Length)
                         {
-                            if (v[j] != old[i + j])
-                            {
-                                ret = false;
-                            }
+                            return -1;
+                        }
+                        if (old[i + j] != v[j])
+                        {
+                            ret = false;
                         }
 
                     }
                     if (ret)
                     {
                         return i;
+
                     }
                 }
             }
@@ -53,6 +59,7 @@ namespace mh.mhxy
             IntPtr pid = IntPtr.Zero;
             LoadDll.GetWindowThreadProcessId((IntPtr)hwnd, out pid);
             //如果(读内存(pid, 模块起址, AA, 7340032, 容器))
+
             byte[] buffer = new byte[7340032];
             //获取缓冲区地址
             int start = 0x11000000;
@@ -67,17 +74,26 @@ namespace mh.mhxy
                 if (idx > 0)
                 {
                     addr.shop = BitConverter.ToInt32(buffer.Skip(idx + 65).Take(4).ToArray(), 0);
-                    addr.x = addr.shop + 272;
-                    addr.y = addr.x + 4;
 
-                    Log.WriteLine("人物X地址:{0}", StringUtil.IntToHex(addr.x));
-                    Log.WriteLine("人物Y地址:{0}", StringUtil.IntToHex(addr.y));
                 }
-                //搜索地图基址
-                idx = BytesIndexOf(buffer, new byte[] { 139, 0, 59, 194, 116, 5, 139, 72, 20, 235, 6 });
+
+
+                //搜索人物坐标基址
+                idx = StringUtil.IndexOfBytes(buffer, "83 C8 01 A3 ?? ?? ?? ?? 83 EC 08 C7 44 24 14 00 00 00 00 B9 ?? ?? ?? ?? C7 44 24 04 00 00 00 00 C7 04 24 00 00 00 00");
                 if (idx > 0)
                 {
-                    addr.MapAddr = BitConverter.ToInt32(buffer.Skip(idx + 13).Take(4).ToArray(), 0);
+                     
+                    addr.x = BitConverter.ToInt32(buffer.Skip(idx + 20).Take(4).ToArray(), 0);
+                    addr.y = addr.x+4;
+                    Log.WriteLine("人物X地址:{0}", StringUtil.IntToHex(addr.x));
+                    Log.WriteLine("人物Y地址:{0}", StringUtil.IntToHex(addr.y));
+
+                }
+                //搜索地图基址
+                idx = BytesIndexOf(buffer, new byte[] { 199, 68, 36, 52, 255, 255, 255, 255, 15, 90, 192, 131, 236, 8, 185 });
+                if (idx > 0)
+                {
+                    addr.MapAddr = BitConverter.ToInt32(buffer.Skip(idx + 15).Take(4).ToArray(), 0);
                     Log.WriteLine("地图基址{0}", StringUtil.IntToHex(addr.MapAddr));
                 }
 

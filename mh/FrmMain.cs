@@ -669,6 +669,7 @@ namespace mh
 
         private void btn_test_Click(object sender, EventArgs e)
         {
+           
             FrmFunTest ft = new FrmFunTest();
             ft.hwnd = current_mh.ToInt32();
             if (ft.hwnd == 0)

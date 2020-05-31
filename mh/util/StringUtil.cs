@@ -4,11 +4,39 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
-
+using System.Text.RegularExpressions;
 namespace mh
 {
     class StringUtil
     {
+        /// <summary>
+        /// 查找字节集数组
+        /// </summary>
+        /// <param name="src">byte数组</param>
+        /// <param name="pattern">要查找的数组 83 C8  ?? ?? 83</param>
+        /// <returns></returns>
+        public static int IndexOfBytes(byte[] src ,string pattern) {
+            string str = StringUtil.byteToHexStr(src);
+            pattern=pattern.Replace(" ","");
+            pattern = pattern.Replace("??", "[A-Za-z0-9]{2}");
+           
+            
+            Regex r = new Regex(pattern); // 定义一个Regex对象实例
+
+            Match m = r.Match(str); // 在字符串中匹配
+
+            if (m.Success)
+
+            {
+
+               return m.Index/2;
+
+            }
+
+        
+            return -1;
+        }
+
 
         //byte[]转换为struct
         public static object BytesToStruct(byte[] bytes, Type type)
@@ -279,15 +307,18 @@ namespace mh
         /// <returns></returns>
         public static string byteToHexStr(byte[] bytes)
         {
-            string returnStr = "";
+           
+            StringBuilder sb = new StringBuilder(bytes.Length);
             if (bytes != null)
             {
                 for (int i = 0; i < bytes.Length; i++)
                 {
-                    returnStr += bytes[i].ToString("X2");
+                  
+                    sb.Append(bytes[i].ToString("X2"));
+                     
                 }
             }
-            return returnStr;
+            return sb.ToString();
         }
 
 

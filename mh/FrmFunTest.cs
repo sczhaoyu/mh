@@ -123,5 +123,12 @@ namespace mh
             int y = Convert.ToInt32(mouse_movY.Text.Trim());
             CallFunc.MouseMove(hwnd,x,y);
         }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            int[] xy = Global.addr.getPeopleXY(hwnd);
+            txt_people_X.Text = xy[0].ToString();
+            txt_people_Y.Text = xy[1].ToString();
+        }
     }
 }

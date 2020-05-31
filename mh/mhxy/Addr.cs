@@ -33,7 +33,7 @@ namespace mh.mhxy
 
         public int GetPeopleID(int hwnd)
         {
-            
+
             string str = LoadDll.GetWindowsName((IntPtr)hwnd).Replace(" ", "");
             int start = str.LastIndexOf("[") + 1;
             int end = str.LastIndexOf("]");
@@ -50,6 +50,8 @@ namespace mh.mhxy
         /// <returns></returns>
         public int[] getPeopleXY(int hwnd)
         {
+
+
             int[] xy = new int[2];
             IntPtr pid = IntPtr.Zero;
             LoadDll.GetWindowThreadProcessId((IntPtr)hwnd, out pid);
@@ -61,7 +63,7 @@ namespace mh.mhxy
             double val = BitConverter.ToSingle(buffer, 0);
             xy[0] = (int)Math.Floor(val / 20);
             //读取y坐标
-            int mapY = LoadDll.ReadMemoryOffsetValue(pid.ToInt32(), this.MapAddr, 0x60, 0x14);
+            int mapY = LoadDll.ReadMemoryOffsetValue(pid.ToInt32(), this.MapAddr, 0x50, 0x14);
             LoadDll.ReadProcessMemory(hProcess, new IntPtr(this.y), byteAddress, 4, IntPtr.Zero);
             val = BitConverter.ToSingle(buffer, 0);
             xy[1] = (int)Math.Floor((mapY - val) / 20);
